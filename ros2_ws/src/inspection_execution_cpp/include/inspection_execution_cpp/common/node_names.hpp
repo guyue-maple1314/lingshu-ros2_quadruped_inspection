@@ -6,7 +6,7 @@
 namespace inspection_execution {
 namespace node_names {
 
-// 执行层连通性占位节点
+// 执行层连通性节点
 inline constexpr const char* kCppHeartbeatNode = "cpp_heartbeat_node";
 
 // tech_1_1

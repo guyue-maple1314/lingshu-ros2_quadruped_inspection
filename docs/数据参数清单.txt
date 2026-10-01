@@ -3,7 +3,7 @@
 来源：ros2_ws/src/inspection_bringup/config/*.yaml
      + inspection_interfaces/msg/*.msg
      + inspection_execution_cpp 各组件 constexpr 常量
-说明：代码不另设验收口径，一切阈值以本清单 = 配置文件为准。
+代码不另设验收口径：一切阈值以本清单（= 配置文件）为准。
 ========================================================================
 
 【一】传感器数据参数（devices.yaml）
@@ -75,9 +75,9 @@ MPC 激活阈值    默认 Mild 及以上介入
 定位退化        有效源 < 2 判 Lost（kLostSourceThreshold）
                 三级状态：Healthy / Degraded / Lost
 
-── 1.2 任务生命周期（占位参数，实机接入后替换）──
+── 1.2 任务生命周期（实机接入后替换）──
 就绪信号假定    assume_robot_ready 默认 true（未接实机就绪信号时打印告警，不静默假设）
-任务进度步长    task_duration_sec 默认 2.0 s（骨架按时间均匀推进，非真实完成度）
+任务进度步长    task_duration_sec 默认 2.0 s（按时间均匀推进，非真实完成度）
 
 ── 1.1 结构化目标安全校验（GoalSafetyValidator）──
 最高允许速度    1.5 m/s（kMaxAllowedSpeedMps；constraints 中 max_speed 超限即拒绝）
@@ -145,7 +145,6 @@ Action（2）:  /execute_task /navigate_goal
 
 
 ========================================================================
-备注：
 - 提升类指标（-85%、+10倍、-90% 等）需项目方提供统一基线后才能计算。
 - 全部节点名见 common/node_names.hpp，话题名见 common/topic_names.hpp，
   代码中禁止散写字符串。

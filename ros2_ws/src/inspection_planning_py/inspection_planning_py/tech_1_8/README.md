@@ -17,11 +17,9 @@
 - 超范围样本不计入精度统计，也不触发异常高温判定。
 - 不虚构温度/精度；离线/在线分离；Python 用 `unittest`（非 pytest）。
 
-## 本机可运行验证
-- Python unittest：
-  ```
-  set PYTHONPATH=...\ros2_ws\src\inspection_planning_py
-  cd ros2_ws\src\inspection_tests\unit_python
-  python -m unittest tech_1_1_to_1_9.test_thermal_1_8 -v
-  ```
-  预期：14/14 通过。
+## 验证方式
+
+- 纯逻辑测试（无需 ROS 2）：仓库根目录执行 `bash tools/reproduce.sh`（Linux/macOS）
+  或 `powershell -ExecutionPolicy Bypass -File tools\reproduce.ps1`（Windows），
+  脚本依次运行 Python 单元测试与 C++ 冒烟测试；
+- ROS 环境：`colcon build` 后 `ros2 launch inspection_bringup tech_1_8.launch.py`。

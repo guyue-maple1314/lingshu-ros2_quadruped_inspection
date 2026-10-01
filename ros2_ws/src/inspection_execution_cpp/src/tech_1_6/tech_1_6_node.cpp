@@ -34,7 +34,7 @@ namespace tech_1_6 {
 ///   ImuAdapter / FootForceAdapter / RobotSdkAdapter 由上层注入
 ///   AbstractLocalizerBackend 由上层注入（融合/SLAM 库未批准时不虚构）
 ///
-/// 激光/相机当前为占位时间戳（真实传感器接入后替换为订阅回调），
+/// 激光/相机数据源尚未接入，同步器按无效标记处理，
 /// 与 tech_1_4_node 示例同理，不虚构感知结果。
 class Tech16Node : public rclcpp::Node {
  public:
@@ -113,13 +113,13 @@ class Tech16Node : public rclcpp::Node {
     if (imu_adapter_) imu_adapter_->ReadSample(&imu_sample);
     if (foot_force_adapter_) foot_force_adapter_->ReadSample(&foot_sample);
 
-    // 激光/相机占位：真实接入后替换为订阅回调的时间戳
+    // 激光/相机未接入：按无效标记推入时间戳
     // 当前示例：标记为无效（不伪造有效状态，红线）
     const std::uint64_t now_ns = static_cast<std::uint64_t>(
         this->now().nanoseconds());
-    synchronizer_.UpdateLidar(now_ns, false);       // 占位：激光未接入
-    synchronizer_.UpdateCamera(0, now_ns, false);   // 占位：左相机未接入
-    synchronizer_.UpdateCamera(1, now_ns, false);   // 占位：右相机未接入
+    synchronizer_.UpdateLidar(now_ns, false);       // 激光未接入
+    synchronizer_.UpdateCamera(0, now_ns, false);   // 左相机未接入
+    synchronizer_.UpdateCamera(1, now_ns, false);   // 右相机未接入
     synchronizer_.UpdateImu(imu_sample);
     synchronizer_.UpdateFootForce(foot_sample);
 

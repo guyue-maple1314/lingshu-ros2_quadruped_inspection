@@ -1,4 +1,4 @@
-""" 连通性占位节点：周期发布指令并订阅机器人状态。"""
+"""连通性节点：周期发布指令并订阅机器人状态。"""
 
 import rclpy
 from rclpy.node import Node

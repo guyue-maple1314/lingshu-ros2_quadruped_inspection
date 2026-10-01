@@ -1,4 +1,4 @@
-"""1.9 声纹模型加载：抽象接口 + 占位实现（不锁具体库、不虚构推理结果）。"""
+"""1.9 声纹模型加载：抽象接口 + 本地桩实现（不锁具体库、不虚构推理结果）。"""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -30,7 +30,7 @@ class AbstractAcousticModel(ABC):
 
 
 class FakeAcousticModel(AbstractAcousticModel):
-    """确定性占位：不虚构故障类别。"""
+    """确定性桩模型：不虚构故障类别。"""
 
     def __init__(self) -> None:
         self._loaded = False
@@ -47,5 +47,5 @@ class FakeAcousticModel(AbstractAcousticModel):
         return AcousticModelInfo(version=self._version, categories=[])
 
     def infer(self, audio: List[float]) -> Tuple[bool, str, float]:
-        # 占位模型不做真实推理，不虚构故障类别
+        # 桩模型不做真实推理，不输出故障类别
         return (False, "", 0.0)

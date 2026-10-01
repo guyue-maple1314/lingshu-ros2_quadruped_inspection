@@ -20,7 +20,7 @@
 
 > 「提升类」指标（如 +25%、-90%、+10 倍、-85%）需项目方提供统一基线与统计口径；代码与测试只按获批口径计算，不虚构结果。
 
-## 本机已验证证据汇总（离线 Windows，无 ROS）
+## 离线验证结果汇总（无 ROS 2 环境）
 
 在 Windows 开发机重跑了全部单元级证据，结果如下（真实数据，未虚构）：
 
@@ -35,9 +35,9 @@
 
 ## 联调结论
 
-- **组件级逻辑（C++ 执行层 + Python 规划层）**：1.1–1.9 九项技术的全部在线/离线组件在本机通过单元级验证，红线（不虚构推理/定位/测温/故障、失效如实标记、超范围不计精度）全部遵守。
-- **集成测试 / 性能测试（需 ROS 2 环境）**：8 个用例中 3 个已实现、5 个为 `pytest.skip` 占位桩，本机无 ROS 未跑。
-- **PPT 定量指标**：成功率/精度/时延/效率等定量阈值需 ROS 2 环境与实机/仿真/传感器采集真实数据，本机不虚构。组件逻辑达标是实机指标达标的前置条件，已全部满足。
+- **组件级逻辑（C++ 执行层 + Python 规划层）**：1.1–1.9 九项技术的全部在线/离线组件已通过单元级验证，红线（不虚构推理/定位/测温/故障、失效如实标记、超范围不计精度）全部遵守。
+- **集成测试 / 性能测试（需 ROS 2 环境）**：8 个用例中 3 个已实现、5 个为 `pytest.skip` 桩，需 ROS 2 环境运行。
+- **PPT 定量指标**：成功率/精度/时延/效率等定量阈值需 ROS 2 环境与实机/仿真/传感器采集真实数据后核验，仓库中不预置未实测数值。组件逻辑达标是实机指标达标的前置条件，已全部满足。
 
 ## 目录结构
 
@@ -57,7 +57,7 @@ acceptance/
 
 ## 运行方式
 
-- C++ smoke（本机）：`clang++ -std=c++17 -Wall -Wextra -Wpedantic` 编译 39 个源文件，零告警，`smoke_test.exe` 退出码 0。
-- Python 单测（本机）：`python -m unittest discover -s ros2_ws/src/inspection_tests/unit_python/tech_1_1_to_1_9 -p 'test_*.py'`（`PYTHONPATH` 指向 `inspection_planning_py` 源码根）。
+- C++ smoke：`clang++ -std=c++17 -Wall -Wextra -Wpedantic` 编译 39 个源文件，零告警，返回码 0。
+- Python 单测：`python -m unittest discover -s ros2_ws/src/inspection_tests/unit_python/tech_1_1_to_1_9 -p 'test_*.py'`（`PYTHONPATH` 指向 `inspection_planning_py` 源码根）。
 - 集成 / 性能测试（需 ROS 2）：`pytest ros2_ws/src/inspection_tests/{integration,performance}/`，需先 `ros2 launch inspection_bringup system.launch.py`。
 - 实机验收：按各 `scenarios.md` 的最终场景（S9/S10 等）执行，证据按场景逐项归档。

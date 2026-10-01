@@ -14,7 +14,7 @@ TaskLifecycleExecutor::TaskLifecycleExecutor(const rclcpp::NodeOptions& options)
     : Node(node_names::kTaskLifecycleExecutorNode, options) {
   using namespace std::placeholders;
 
-  // 实机就绪信号与真实任务进度尚未接入：用参数显式占位，默认值不等于真实结论
+  // 实机就绪信号与真实任务进度尚未接入：用参数显式配置，默认值不等于真实结论
   declare_parameter("assume_robot_ready", true);
   declare_parameter("task_duration_sec", 2.0);
   assume_robot_ready_ = get_parameter("assume_robot_ready").as_bool();
@@ -95,7 +95,7 @@ void TaskLifecycleExecutor::Execute(const std::shared_ptr<GoalHandle> goal_handl
       return;
     }
 
-    // 骨架实现：按 task_duration_sec 均匀推进，代表"执行中"而非真实完成度
+    // 按 task_duration_sec 均匀推进，代表"执行中"而非真实完成度
     progress += progress_increment_;
     feedback->progress = progress;
     feedback->current_state = "running";

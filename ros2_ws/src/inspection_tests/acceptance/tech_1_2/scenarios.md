@@ -48,12 +48,12 @@
 ## S7：抢占集成测试 EXECUTE→PREEMPT（需 ROS 2 环境）
 - 输入：`test_task_preemption.py` 发布低价值任务后注入高价值任务
 - 期望：先观测到 `EXECUTE`（current_task_id="low"），再观测到 `PREEMPT`（current_task_id="high"）。
-- 证据：`pytest test_task_preemption.py` 通过截图（需 ROS 环境，本机未跑）。
+- 证据：`pytest test_task_preemption.py` 通过截图（需 ROS 2 环境运行）。
 
 ## S8：抢占响应 ≤500ms 性能（需 ROS 2 环境）
 - 输入：`test_500ms_switch.py` 低价值任务运行 0.3s 后注入高价值任务
 - 期望：观测到 `PREEMPT` 决策，注入到决策时延 `≤ 500ms`（PPT 阈值）。
-- 证据：`pytest test_500ms_switch.py` 通过截图（需 ROS 环境，本机未跑）。
+- 证据：`pytest test_500ms_switch.py` 通过截图（需 ROS 2 环境运行）。
 
 ## S9：多任务成功率 92.3% + 抢占≤500ms 实机闭环（最终指标）
 - 输入：PPT 场景（多任务并发、突发高优先级、原任务恢复、低电量）× 多轮

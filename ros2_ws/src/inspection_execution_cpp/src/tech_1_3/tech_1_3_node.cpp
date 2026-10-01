@@ -3,11 +3,6 @@
 //   - ObservationBuilder    （imu + foot_force + terrain → observation）
 //   - PolicyOutputValidator（action 维度/范围/时效）
 //   - LocomotionCommandAdapter（action → RobotSdkAdapter 的 JointCommand）
-//
-//  本机验证约束：
-//   本机无 ROS 2 环境，本文件只保证语法结构合理（rclcpp 头文件引用、
-//   命名表引用、Topic 名引用）；编译请在 ROS 2 环境用 colcon。
-//   纯逻辑 smoke test 不走本节点，直接走组件 include。
 
 #include <chrono>
 #include <memory>
@@ -26,8 +21,7 @@
 #include "inspection_execution_cpp/tech_1_3/policy_output_validator.hpp"
 #include "inspection_execution_cpp/tech_1_3/locomotion_command_adapter.hpp"
 
-// 复用 inspection_interfaces/TerrainObservation（若已生成）
-// 若接口尚未编译，本机语法检查阶段无法看到，但 include 路径在 ROS 环境可用。
+// 复用 inspection_interfaces/TerrainObservation
 #include "inspection_interfaces/msg/terrain_observation.hpp"
 
 using namespace std::chrono_literals;

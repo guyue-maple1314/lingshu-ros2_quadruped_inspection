@@ -87,7 +87,7 @@ class PolicyExporter:
         raw = config.to_json().encode("utf-8")
         return hashlib.sha256(raw).hexdigest()[:16]
 
-    # ---------- 占位钩子：权重真正批准后实现 ----------
+    # ---------- 权重钩子 ----------
 
     def can_export_weights(self) -> bool:
         """导出器不虚构权重。未提供训练后端权重文件前一律返回 False。"""

@@ -22,7 +22,7 @@ try:
     from rclpy.node import Node
     from inspection_interfaces.msg import GratingStatus
     _HAS_RCLPY = True
-except ImportError:  # 本机无 ROS 2 环境
+except ImportError:  # 未安装 ROS 2
     _HAS_RCLPY = False
     Node = object  # type: ignore
 

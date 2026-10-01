@@ -5,7 +5,7 @@ PPT 范围：基于先验 BIM 与实时 SLAM 的语义地图动态标注。
 红线：BIM 格式尚未获批，bim_loader 走抽象接口
 （类似 AbstractLocalizerBackend / AbstractMpcSolver），不锁具体 BIM 库。
 
-FakeBimLoader 仅做确定性占位输出，不虚构 BIM 构件：
+FakeBimLoader 只做确定性输出，不虚构 BIM 构件：
 - 未装入任何 BIM 时返回空列表（让 C++ 侧栅格 weight=0，不虚构）
 - 已装入的 BIM 元素如实返回
 """

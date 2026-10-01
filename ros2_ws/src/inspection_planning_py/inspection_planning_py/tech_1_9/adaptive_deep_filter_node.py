@@ -1,4 +1,4 @@
-"""1.9 自适应深度滤波节点：抽象深度滤波接口 + 占位实现。"""
+"""1.9 自适应深度滤波节点：抽象深度滤波接口 + 本地桩实现。"""
 
 from abc import ABC, abstractmethod
 from typing import List, Tuple
@@ -20,7 +20,7 @@ class AbstractDeepFilter(ABC):
 
 class FakeDeepFilter(AbstractDeepFilter):
     def filter(self, audio: List[float]) -> Tuple[bool, List[float]]:
-        # 占位：不虚构滤波效果，原样返回
+        # 不输出未经后端处理的滤波效果：原样返回
         return (True, list(audio))
 
 
@@ -28,7 +28,7 @@ class AdaptiveDeepFilterNode(Node):
     def __init__(self) -> None:
         super().__init__(ADAPTIVE_DEEP_FILTER_NODE)
         self._filter: AbstractDeepFilter = FakeDeepFilter()
-        # 音频消息类型尚未定义，先订阅 AcousticDiagnosis 占位以接收波束/SNR 状态
+        # 先订阅 AcousticDiagnosis 接收波束与 SNR 状态
         self.create_subscription(AcousticDiagnosis, ACOUSTIC_DIAGNOSIS, self._on_diagnosis, 10)
 
     def _on_diagnosis(self, msg: AcousticDiagnosis) -> None:

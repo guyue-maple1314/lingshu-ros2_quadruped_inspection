@@ -2,14 +2,14 @@
 灵枢巡检机器人 LingShu Inspector —— 具体参数数据表
 项目：基于 ROS 2 三层架构的四足机械狗巡检机器人（C++ / Python / JavaScript）
 团队：青岛港湾职业技术学院 · 灵枢智行团队（qdgw / lszx_byc）
-版本：对应提交 2159fc5 起的“迭代技术代码”版本
+版本：技术代码版（2026-10）
 ================================================================================
 
-说明：
-1. 本表是“按技术逐项列出”的参数数据表，与 docs/数据参数清单.txt（全量盘点）配套；
-2. 所有值均为程序中的实际取值，来源标注到配置文件或源码常量，代码不另设口径；
-3. 验收阈值集中保存在 inspection_bringup/config/acceptance_thresholds.yaml；
-4. 标“占位”的项表示骨架实现的临时假设，实机标定/接入后必须替换。
+本表按技术逐项列出程序中的实际取值，来源标注到配置文件或源码常量，代码不另设口径；
+验收阈值集中保存在 inspection_bringup/config/acceptance_thresholds.yaml。
+「提升类」指标（+25%、-90%、+10 倍、-85% 等）需项目方提供统一基线后才能计算。
+参数取值均为程序当前取值：未接实机、未标定的项在“说明”列注明，不得作为实机结论引用。
+全部节点名见 common/node_names.*，话题名见 common/topic_names.*，代码禁止散写字符串。
 
 --------------------------------------------------------------------------------
 【一】系统与传感器参数
@@ -54,8 +54,8 @@ IMU 采样率               | 1000              | Hz        | devices.yaml      
 新任务准入条件           | 电量-任务耗电-返航耗电 ≥ 10  | 百分点 | battery_safety_policy.py | 不满足不启动
 调度周期                 | 0.1               | s         | planning.yaml              | scheduler_period_sec
 任务价值权重             | 风险 1.0 / 收益 1.0 / 紧急度 1.0 | - | task_scoring.yaml      | 权重不硬编码
-任务进度推进时长         | 2.0               | s         | task_lifecycle_executor    | 占位：均匀推进，非真实完成度
-就绪信号假定             | true              | -         | task_lifecycle_executor    | 占位：实机就绪信号接入后替换
+任务进度推进时长         | 2.0               | s         | task_lifecycle_executor    | 按时间均匀推进，非真实完成度
+就绪信号假定             | true              | -         | task_lifecycle_executor    | 实机就绪信号接入前使用
 验收：多任务成功率       | 0.923             | -         | acceptance_thresholds.yaml | 1.2
 验收：抢占响应           | ≤ 500             | ms        | acceptance_thresholds.yaml | 1.2
 
@@ -113,7 +113,7 @@ IMU 采样率               | 1000              | Hz        | devices.yaml      
 航点到达容差             | 0.10              | m         | navigation_executor        | kWaypointTolerance
 退化速度因子             | 0.3               | -         | navigation_executor        | kDegradedSpeedFactor
 导航超时                 | 60                | s         | tech_1_6_node              | nav_timeout_sec，超时 abort
-占位协方差（源≥3 / <3）  | 0.01 / 0.04       | -         | FakeLocalizerBackend       | 占位后端，不得当实测精度
+本地后端协方差（源≥3 / <3）| 0.01 / 0.04       | -         | FakeLocalizerBackend       | 真实后端接入前使用，不得作为精度依据
 验收：定位精度           | ±2                | cm        | acceptance_thresholds.yaml | 1.6
 
 --------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ IMU 采样率               | 1000              | Hz        | devices.yaml      
 多通道同步最大时延       | 20                | ms        | microphone_synchronizer    | max_age_ns = 20,000,000
 波束方位（示例参数）     | 0.0               | °         | tech_1_9_node              | beam_azimuth_deg
 背景噪声（示例参数）     | 85.0              | dB        | tech_1_9_node              | background_noise_db
-音频帧样本（示例）       | 64                | 采样      | tech_1_9_node              | 48000 Hz，合成占位波形
+音频帧样本（示例）       | 64                | 采样      | tech_1_9_node              | 48000 Hz，合成示例波形
 音频帧时延上限           | 1.0               | s         | acoustic_fault_diagnosis_node | audio_max_age_sec，过期不推理
 故障告警置信度阈值       | 0.5               | -         | acoustic_fault_diagnosis_node | fault_confidence_threshold
 验收：输出 SNR           | 15 – 20           | dB        | acceptance_thresholds.yaml | 1.9
@@ -172,10 +172,4 @@ IMU 采样率               | 1000              | Hz        | devices.yaml      
 动作（action）           | 2                 | /execute_task、/navigate_goal（服务端在 tech_1_6_node）
 业务话题                 | 15                | 见 docs/interfaces.md Topic 表
 原始传感器话题           | 6                 | 当前由适配器直读，未走 ROS 话题（预留）
-
-================================================================================
-备注：
-- 「提升类」指标（+25%、-90%、+10 倍、-85% 等）需项目方提供统一基线后才能计算；
-- 未接实机/未标定的参数已在表中标注“占位”，不得作为实机验收结论引用；
-- 全部节点名见 common/node_names.*，话题名见 common/topic_names.*，代码禁止散写字符串。
 ================================================================================

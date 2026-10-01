@@ -25,7 +25,7 @@ namespace tech_1_8 {
 ///
 /// 数据流：
 ///   ImuAdapter（注入）→ 1000Hz IMU 样本
-///   红外帧占位（SetThermalFrame 注入，真实接入后替换为订阅回调）
+///   红外帧由 SetThermalFrame 注入
 ///   发布 /thermal_measurement（ThermalMeasurement）
 ///
 /// 红线：
@@ -67,7 +67,7 @@ class Tech18Node : public rclcpp::Node {
     imu_adapter_ = std::move(adapter);
   }
 
-  /// 红外帧注入（占位：真实传感器接入后替换为订阅回调）
+  /// 红外帧注入
   void SetThermalFrame(const ThermalFrame& frame) {
     pending_thermal_ = frame;
   }
@@ -81,9 +81,9 @@ class Tech18Node : public rclcpp::Node {
       synchronizer_->UpdateImu(imu_sample);
     }
 
-    // 2. 红外帧注入（占位，未注入时 valid=false，不虚构）
+    // 2. 红外帧注入（未注入时 valid=false，不虚构）
     synchronizer_->UpdateThermal(pending_thermal_);
-    pending_thermal_ = ThermalFrame{};  // 清空占位
+    pending_thermal_ = ThermalFrame{};  // 用后清空
 
     // 3. 时间同步（IMU 无效时返回 nullopt，不虚构）
     const auto packet = synchronizer_->TrySync();

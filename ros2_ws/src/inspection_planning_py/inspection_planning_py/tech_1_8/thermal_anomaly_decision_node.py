@@ -25,7 +25,7 @@ try:
     from rclpy.node import Node
     from inspection_interfaces.msg import ThermalMeasurement, InspectionAlert
     _HAS_RCLPY = True
-except ImportError:  # 本机无 ROS 2 环境
+except ImportError:  # 未安装 ROS 2
     _HAS_RCLPY = False
     Node = object  # type: ignore
 
@@ -37,7 +37,7 @@ from .thermal_metrics import (
     ThermalMetrics,
 )
 
-# 异常高温阈值（示例值，真实阈值由项目方标定）
+# 异常高温判定阈值（由项目方按现场标定）
 ANOMALY_HIGH_TEMP_C = 80.0
 
 
@@ -53,7 +53,7 @@ class ThermalAnomalyDecisionNode(Node):  # type: ignore[misc]
         self._metrics.start_run()
 
         if not _HAS_RCLPY:
-            # 本机无 ROS 环境，仅做逻辑占位
+            # 未安装 ROS 2：仅运行离线逻辑自检
             return
 
         self._thermal_sub = self.create_subscription(

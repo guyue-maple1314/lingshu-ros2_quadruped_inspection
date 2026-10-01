@@ -1,4 +1,4 @@
-"""1.1 大模型客户端：抽象接口 + DeepSeek 实现 + 占位实现（无 ROS 依赖，便于单测）。"""
+"""1.1 大模型客户端：抽象接口 + DeepSeek 实现 + 本地桩实现（无 ROS 依赖，便于单测）。"""
 
 import json
 import os
@@ -60,7 +60,7 @@ class LlmClient:
 
 
 class StubLlmClient(LlmClient):
-    """ 占位：依据指令/告警生成固定结构化目标。"""
+    """无后端模型时，依据指令/告警生成固定结构化目标。"""
 
     def __init__(self) -> None:
         self._seq = 0

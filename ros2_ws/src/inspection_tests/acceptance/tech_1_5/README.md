@@ -25,20 +25,9 @@
 ## 证据模板
 验收证据按本目录 `scenarios.md` 的场景逐项归档。
 
-## 本机可运行验证
-- Python unittest：
-  ```
-  set PYTHONPATH=...\ros2_ws\src\inspection_planning_py
-  cd ros2_ws\src\inspection_tests\unit_python
-  python -m unittest tech_1_1_to_1_9.test_grating_metrics_1_5 -v
-  ```
-- C++ 纯逻辑 smoke test（clang++ 脱离 ROS）：
-  ```
-  clang++ -std=c++17 -I<include> smoke_test_core.cpp <common/1.1/1.2/1.3/1.4/1.5 实现> -o smoke_test.exe
-  smoke_test.exe  # 应打印 "core logic smoke test passed (incl. tech_1_3 + tech_1_4 + tech_1_5 components)"
-  ```
-- ROS 真实编译（需 ROS 2 + colcon）：
-  ```
-  colcon build --packages-up-to inspection_execution_cpp inspection_planning_py
-  ros2 launch inspection_bringup tech_1_5.launch.py
-  ```
+## 验证方式
+
+- 纯逻辑测试（无需 ROS 2）：仓库根目录执行 `bash tools/reproduce.sh`（Linux/macOS）
+  或 `powershell -ExecutionPolicy Bypass -File tools\reproduce.ps1`（Windows），
+  脚本依次运行 Python 单元测试与 C++ 冒烟测试；
+- ROS 环境：`colcon build` 后 `ros2 launch inspection_bringup tech_1_5.launch.py`。

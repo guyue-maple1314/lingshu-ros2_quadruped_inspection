@@ -23,7 +23,7 @@
 ## 证据模板
 验收证据按本目录 `scenarios.md` 的场景逐项归档。
 
-## 本机可运行的离线验证
+## 离线验证
 - Python 21/21 单测：
   ```
   set PYTHONPATH=...\ros2_ws\src\inspection_planning_py

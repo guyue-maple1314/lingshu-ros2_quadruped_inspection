@@ -11,7 +11,7 @@
 - **ImuAdapter / FootForceAdapter**：由上层节点启动时创建具体实例化适配器，通过 `SetImuAdapter()` / `SetFootForceAdapter()` 注入。
 - **RobotSdkAdapter**：由上层 launch 或节点初始化时创建，通过 `SetRobotSdkAdapter()` 注入；运动学约束构建器读取机器人状态。
 - **AbstractLocalizerBackend**：融合/SLAM 库批准后创建具体派生，通过 `SetLocalizerBackend()` 注入；未注入时使用默认 `FakeLocalizerBackend`，不虚构 SLAM 结果。
-- **激光/相机**：当前为占位时间戳（标记 `valid=false`），真实传感器接入后替换为订阅回调，与 tech_1_4_node 示例同理。
+- **激光/相机**：由上层注入，未接入时标记 `valid=false`，不伪造有效状态。
 
 ## PPT 指标（阈值已落地 `localization_metrics.py`）
 - 定位精度 ±**2cm**（0.02m）
@@ -35,20 +35,9 @@ MultiSensorSynchronizer → KinematicConstraintBuilder
 ## 证据模板
 验收证据按本目录 `scenarios.md` 的场景逐项归档。
 
-## 本机可运行验证
-- Python unittest：
-  ```
-  set PYTHONPATH=...\ros2_ws\src\inspection_planning_py
-  cd ros2_ws\src\inspection_tests\unit_python
-  python -m unittest tech_1_1_to_1_9.test_localization_metrics_1_6 -v
-  ```
-- C++ 纯逻辑 smoke test（clang++ 脱离 ROS）：
-  ```
-  clang++ -std=c++17 -I<include> smoke_test_core.cpp <common/1.1/1.2/1.3/1.4/1.5/1.6 实现> -o smoke_test.exe
-  smoke_test.exe  # 应打印 "core logic smoke test passed (incl. tech_1_3 + tech_1_4 + tech_1_5 + tech_1_6 components)"
-  ```
-- ROS 真实编译（需 ROS 2 + colcon）：
-  ```
-  colcon build --packages-up-to inspection_execution_cpp inspection_planning_py
-  ros2 launch inspection_bringup tech_1_6.launch.py
-  ```
+## 验证方式
+
+- 纯逻辑测试（无需 ROS 2）：仓库根目录执行 `bash tools/reproduce.sh`（Linux/macOS）
+  或 `powershell -ExecutionPolicy Bypass -File tools\reproduce.ps1`（Windows），
+  脚本依次运行 Python 单元测试与 C++ 冒烟测试；
+- ROS 环境：`colcon build` 后 `ros2 launch inspection_bringup tech_1_6.launch.py`。

@@ -43,7 +43,7 @@ class TaskLifecycleExecutor : public rclcpp::Node {
   // 就绪信号尚未接入实机时按参数假定，并在首次使用时打印告警（不静默假设）
   bool assume_robot_ready_{true};
   bool readiness_warning_logged_{false};
-  // 进度推进步长：骨架实现按 task_duration_sec 均匀推进，非真实任务进度
+  // 进度推进步长：按 task_duration_sec 均匀推进，非真实任务进度
   double progress_increment_{0.05};
 };
 

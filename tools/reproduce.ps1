@@ -43,7 +43,7 @@ if (-not $compiler) {
 Write-Host ""
 if ($failed -eq 0) {
   Write-Host "全部通过：Python 单元测试 + C++ 纯逻辑冒烟测试"
-  Write-Host "下一步（需 Ubuntu + ROS 2 Humble）：见 README「评审复现指引」第 3 节"
+  Write-Host "下一步（需 Ubuntu + ROS 2 Humble）：见 README「复现步骤」第 3 节"
 } else {
   Write-Host "有 $failed 项未通过，请对照 README「运行环境」节检查工具链"
   exit 1
