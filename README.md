@@ -83,16 +83,20 @@ make -j$(nproc) && sudo make install && sudo ldconfig
 
 ## 构建与运行
 
-```powershell
+```bash
 # 1) source ROS 2 环境后构建
-.\tools\build_workspace.ps1
+source /opt/ros/humble/setup.bash
+cd ros2_ws && colcon build --symlink-install
+source install/setup.bash
 
 # 2) 启动三层连通骨架
 ros2 launch inspection_bringup system.launch.py
 
-# 3) 运行测试
-.\tools\run_tests.ps1
+# 3) 运行 ROS 环境测试
+colcon test --event-handlers console_direct+
 ```
+
+纯逻辑测试（无需 ROS 2）：`bash tools/reproduce.sh`，Windows 用 `powershell -ExecutionPolicy Bypass -File tools\reproduce.ps1`。
 
 按技术单独启动：`ros2 launch inspection_bringup tech_1_1.launch.py`（`tech_1_1` 至 `tech_1_9`）。
 
